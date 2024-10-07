@@ -1,3 +1,8 @@
+mod foo;
+
+use foo::my_struct::A;
+
 fn main() {
-    println!("Hello, world!");
+    let rect = A{};
+    rect.area();
 }
