@@ -1,64 +1,70 @@
+#![allow(dead_code)]
+extern crate core;
+
+use core::panic::PanicMessage;
 
 mod slice_type;
 mod user;
-use user::User;
+
 #[derive(Debug)]
-struct Color(i32, i32, i32);
-struct Point(i32, i32, i32);
 
-fn main() {
-    // control_flow();
-    // loop_test();
-    // slice_type_test();
-    let user = User {
-        active: true,
-        username: String::from("some user"),
-        email: String::from("abc@example.com"),
-        sign_in_count: 1,
-    };
-    let user1 = User{
-        email: String::from("Abc@#gmail.com"),
-        ..user
-    };
-    // user.show_name();
-    user1.show_name();
-    
-    let back = Color(0, 2, 0);
-    let mut origin = Point(0, 0, 0);
-    let mut abc = &mut origin;
-    abc.0 =1 ;
-    
-    
-    println!("Size: {}, {}", back.0, back.1);
-    
+struct Person {
+    name: String,
+    age: u8,
 }
 
-fn slice_type_test() {
-    println!("This is size: {}",  slice_type::first_word(&"Hello"));
+// A unit struct
+struct Unit;
+
+// A tuple struct
+struct Pair(i32, f32);
+
+// A struct with two fields
+struct Point {
+    x: f32,
+    y: f32,
 }
 
-fn control_flow() {
-    let number = 3;
-    if number % 2 == 0 {
-        println!("Even number ")
-    } else {
-        println!("Odd number")
-    }
-
-    let x = if number % 2 == 0 {true} else { false };
-
-    println!("Value of x: {}", x);
-
+enum Events {
+    Wedding,
+    Birthday,
+    Point,
 }
 
-fn loop_test () {
-    let mut number = 5;
-    loop {
-        if(number >= 0) {
-            println!("value of i: {}", number);
-            number = number - 1;
-        }
-        else { break }
+// Structs can be reused as fields of another struct
+struct Rectangle {
+    // A rectangle can be specified by where the top left and bottom right
+    // corners are in space.
+    top_left: Point,
+    bottom_right: Point,
+}
+fn rect_area(rect: &Rectangle) -> f32 {
+    let Rectangle {
+        top_left: Point { x: x1, y: y1 },
+        bottom_right: Point { x: x2, y: y2 },
+    } = rect;
+    let width = (x2 - x1).abs();
+    let height = (y2 - y1).abs();
+    width * height
+}
 
+fn square(point: &Point, side: f32) -> Rectangle {
+    Rectangle {
+        top_left: Point {
+            x: point.x,
+            y: point.y,
+        },
+        bottom_right: Point {
+            x: point.x + side,
+            y: point.y + side,
+        },
     }
 }
+fn inspect(event: Events) {
+    match event {
+        Events::Wedding => println!("Wedding"),
+        Events::Birthday => println!("Birthday"),
+        Events::Point => println!("Point"),
+    }
+}
+fn main() {}
